@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Soundboard</title>
+  <link rel="icon" type="image/x-icon" href="static/soundboard_icon.ico" />
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #e7f3ff;
+      color: #1d3557;
+    }
+
+    h1 {
+      font-size: 4rem;
+      text-align: center;
+      color: #0077cc;
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4fc3f7;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #0288d1;
+    }
+
+    button,
+    .sound-button,
+    #stopall-btn,
+    #fullscreen-btn {
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus,
+    .sound-button:focus,
+    #stopall-btn:focus,
+    #fullscreen-btn:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    #dropzone {
+      border: 2px dashed #90caf9;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      background: #f0faff;
+      margin-bottom: 30px;
+      transition: background 0.3s;
+    }
+
+    #dropzone.dragover {
+      background: #d0e8ff;
+    }
+
+    #buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .sound-button {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 2.2rem;
+      /* Space for delete button */
+      background: #90caf9;
+      border-radius: 14px;
+      min-width: 120px;
+      max-width: 200px;
+      margin: 10px;
+      box-sizing: border-box;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
+
+    .sound-button:hover {
+      background: #64b5f6;
+    }
+
+    .sound-image {
+      width: 64px !important;
+      height: 64px !important;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      aspect-ratio: 1 / 1;
+      /* Always square */
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      cursor: pointer;
+      z-index: 2;
+      transition: opacity 0.2s, color 0.2s;
+      color: #888;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
+      color: #e53935;
+    }
+
+    .sound-label {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      margin-top: 0;
+      color: #15417e;
+    }
+
+    /* Modal */
+    #uploadModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #uploadModalContent {
+      background: linear-gradient(to right, #4fc3f7, #81d4fa);
+      padding: 30px;
+      border-radius: 20px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    #uploadModalContent h3 {
+      color: #0077cc;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    #uploadModalContent label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    #uploadModalContent input {
+      margin: 10px 0;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    #uploadModalContent button {
+      padding: 12px 20px;
+      background: #0077cc;
+      color: white;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #uploadModalContent button:hover {
+      background: #0288d1;
+    }
+
+    #fullscreen-btn {
+      display: block !important;
+      position: static;
+      background-color: #66ccff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.2s;
+      cursor: pointer;
+      /* visually match other buttons */
+    }
+
+    #fullscreen-btn:hover {
+      background: #0288d1;
+    }
+
+    #stopall-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 1001;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #stopall-btn:hover {
+      background: #b71c1c;
+    }
+
+    @media (max-width: 768px) {
+      .sound-button {
+        font-size: 1.7rem !important;
+        max-width: 100vw;
+        padding: 24px !important;
+      }
+
+      .sound-image {
+        width: 80px !important;
+        height: 80px !important;
+      }
+
+      #fullscreen-btn {
+        display: block !important;
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 10000;
+        font-size: 1.7rem;
+        padding: 1.5rem;
+      }
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: none;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      cursor: pointer;
+      z-index: 2;
+      transition: opacity 0.2s, color 0.2s;
+      color: #888;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .fav-btn.fav {
+      color: #e53935;
+      opacity: 1;
+    }
+
+    .fav-btn:hover,
+    .fav-btn.fav:hover {
+      opacity: 1;
+      color: #e53935;
+    }
+
+    .custom-file-label {
+      display: inline-block;
+      padding: 10px 16px;
+      background: #4fc3f7;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+
+    .custom-file-label:hover {
+      background: #0288d1;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    .sortable-ghost {
+      opacity: 0 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Soundboard</h1>
+  <div id="controls">
+    <input type="file" id="fileInput" accept="audio/*" hidden />
+    <button onclick="triggerFile()">Upload</button>
+    <button class="refresh-btn" onclick="fetchSounds()">Refresh</button>
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+  </div>
+
+  <!-- Add the floating stop button outside controls -->
+  <button id="stopall-btn" onclick="stopAll()" title="Stop All">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+      <rect x="6" y="6" width="12" height="12" rx="2" />
+    </svg>
+  </button>
+
+  <div id="dropzone">Drag & drop your sound file here</div>
+  <div id="buttons"></div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal">
+    <div id="uploadModalContent">
+      <button id="closeUploadModal" style="
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #0077cc;
+        cursor: pointer;
+        z-index: 10;
+        padding: 0;
+        line-height: 1;
+      " title="Close">&times;</button>
+      <h3>Name Your Sound</h3>
+      <input type="text" id="soundName" placeholder="Enter sound name..." />
+
+      <label class="custom-file-label" for="imageInput">Select an Icon (Optional)</label>
+      <input type="file" id="imageInput" accept="image/*" />
+
+      <button onclick="submitUpload()">Submit</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script>
+    let selectedFile = null;
+    let favourites = [];
+    let soundOrder = [];
+
+    async function fetchOrder() {
+      const res = await fetch("/order");
+      soundOrder = await res.json();
+    }
+
+    async function saveOrder(order) {
+      await fetch("/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order)
+      });
+    }
+
+    async function fetchFavourites() {
+      const res = await fetch("/favourites");
+      favourites = await res.json();
+    }
+
+    async function saveFavourites() {
+      await fetch("/favourites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(favourites)
+      });
+    }
+
+    async function fetchSounds() {
+      await fetchFavourites();
+      await fetchOrder();
+      const res = await fetch("/sounds");
+      let sounds = await res.json();
+
+      // Sort: by saved order, then alphabetically (NO favourites prioritization)
+      sounds.sort((a, b) => {
+        const aIdx = soundOrder.indexOf(a);
+        const bIdx = soundOrder.indexOf(b);
+        if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+        if (aIdx !== -1) return -1;
+        if (bIdx !== -1) return 1;
+        return a.localeCompare(b);
+      });
+
+      const container = document.getElementById("buttons");
+      container.innerHTML = "";
+
+      sounds.forEach(name => {
+        const fileExtension = name.split('.').pop().toLowerCase();
+        if (!['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(fileExtension)) {
+          const btn = document.createElement("button");
+          btn.className = "sound-button";
+          btn.style.position = "relative";
+          btn.setAttribute("data-sound", name);
+          const baseName = name.replace(/\.[^/.]+$/, "");
+
+          // Favourites button
+          const favBtn = document.createElement("button");
+          favBtn.title = "Favourite";
+          favBtn.className = "fav-btn" + (favourites.includes(name) ? " fav" : "");
+          favBtn.innerHTML = favourites.includes(name)
+            ? `<svg width="20" height="20" viewBox="0 0 20 20" fill="#e53935" stroke="#e53935"><path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/></svg>`
+            : `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/></svg>`;
+          favBtn.onclick = (e) => {
+            e.stopPropagation();
+            toggleFavourite(name);
+          };
+          btn.appendChild(favBtn);
+
+          // Delete button
+          const delBtn = document.createElement("button");
+          delBtn.title = "Delete";
+          delBtn.className = "delete-btn";
+          delBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="6" x2="14" y2="14"/>
+              <line x1="14" y1="6" x2="6" y2="14"/>
+            </svg>
+          `;
+          delBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete "${baseName}"?`)) {
+              deleteSound(name);
+            }
+          };
+          btn.appendChild(delBtn);
+
+          // Label
+          const label = document.createElement("div");
+          label.className = "sound-label";
+          label.textContent = baseName;
+          btn.appendChild(label);
+
+          const imagePath = `/sounds/${baseName}.png`;
+          fetch(imagePath).then(res => {
+            if (res.ok) {
+              const img = document.createElement("img");
+              img.src = imagePath;
+              img.className = "sound-image";
+              btn.appendChild(img);
+            }
+          });
+
+          btn.onclick = () => playSound(name);
+
+          container.appendChild(btn);
+        }
+      });
+
+      // Enable drag-and-drop sorting
+      if (window.soundSortable) window.soundSortable.destroy();
+      window.soundSortable = Sortable.create(container, {
+        animation: 150,
+        filter: ".fav-btn,.delete-btn",
+        ghostClass: "sortable-ghost", // Add this line
+        onEnd: async function (evt) {
+          // Only update order for non-favourites
+          const newOrder = Array.from(container.children)
+            .map(btn => btn.getAttribute("data-sound"))
+            .filter(name => !!name);
+          await saveOrder(newOrder);
+          soundOrder = newOrder;
+        }
+      });
+    }
+
+    async function toggleFavourite(name) {
+      const idx = favourites.indexOf(name);
+      if (idx === -1) {
+        favourites.push(name);
+      } else {
+        favourites.splice(idx, 1);
+      }
+      await saveFavourites();
+      fetchSounds();
+    }
+
+    async function deleteSound(name) {
+      await fetch(`/delete/${encodeURIComponent(name)}`, { method: "DELETE" });
+      favourites = favourites.filter(f => f !== name);
+      await saveFavourites();
+      await fetchSounds();
+    }
+
+    async function playSound(name) {
+      await fetch("/play", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+    }
+
+    async function stopAll() {
+      await fetch("/stop", { method: "POST" });
+    }
+
+    function triggerFile() {
+      document.getElementById("fileInput").click();
+    }
+
+    document.getElementById("fileInput").addEventListener("change", (e) => {
+      selectedFile = e.target.files[0];
+      openModal(selectedFile);
+    });
+
+    const dropzone = document.getElementById("dropzone");
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", () => {
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+      selectedFile = e.dataTransfer.files[0];
+      openModal(selectedFile);
+    });
+
+    function openModal(file) {
+      document.getElementById("uploadModal").style.display = "flex";
+      // Default name: filename without extension
+      if (file) {
+        const defaultName = file.name.replace(/\.[^/.]+$/, "");
+        document.getElementById("soundName").value = defaultName;
+      } else {
+        document.getElementById("soundName").value = "";
+      }
+      document.getElementById("imageInput").value = null;
+    }
+
+    // Make clicking the label open the file dialog for image
+    document.querySelector('.custom-file-label').onclick = function () {
+      document.getElementById("imageInput").click();
+    };
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    async function submitUpload() {
+      const name = document.getElementById("soundName").value.trim();
+      if (!name || !selectedFile) return;
+
+      const extension = selectedFile.name.split('.').pop();
+      const renamedFile = new File([selectedFile], `${name}.${extension}`, { type: selectedFile.type });
+
+      const formData = new FormData();
+      formData.append("file", renamedFile);
+
+      const imageFile = document.getElementById("imageInput").files[0];
+      if (imageFile) {
+        const renamedImage = new File([imageFile], `${name}.png`, { type: imageFile.type });
+        formData.append("image", renamedImage);
+      }
+
+      await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      document.getElementById("uploadModal").style.display = "none";
+      selectedFile = null;
+      await fetchSounds();
+    }
+
+    // Add close functionality for the upload modal
+    document.getElementById("closeUploadModal").onclick = function () {
+      document.getElementById("uploadModal").style.display = "none";
+      selectedFile = null;
+    };
+
+    // Optional: close modal when clicking outside the content
+    document.getElementById("uploadModal").onclick = function (e) {
+      if (e.target === this) {
+        this.style.display = "none";
+        selectedFile = null;
+      }
+    };
+
+    fetchSounds();
+  </script>
+</body>
+
+</html>
