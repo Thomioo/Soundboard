@@ -1,5 +1,7 @@
 .build
+.vscode
 build
 dist
 soundboard_app.log
 settings.json
+main.spec

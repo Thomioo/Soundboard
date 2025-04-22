@@ -67,7 +67,7 @@ SOUNDS_DIR.mkdir(parents=True, exist_ok=True) # Ensure the directory exists, inc
 
 FAVOURITES_FILE = SOUNDS_DIR / "favourites.json"
 ORDER_FILE = SOUNDS_DIR / "order.json"
-ICON_FILE = "soundboard_icon.ico" # Assumes icon is in 'static' folder relative to script/bundle
+ICON_FILE = "icon.png" # Assumes icon is in 'static' folder relative to script/bundle
 VOLUMES_FILE = SOUNDS_DIR / "volumes.json"
 SETTINGS_FILE = PERSISTENT_DATA_DIR / "settings.json"
 
