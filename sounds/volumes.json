@@ -1,5 +1,9 @@
 {
   "MONEY.wav": 0.2,
-  "Money.wav": 1.05,
-  "Prime.wav": 0.25
+  "Money.wav": 1.2,
+  "Prime.wav": 0.4,
+  "Bonk.wav": 2,
+  "Victory.wav": 0.8,
+  "VineBoom.wav": 0.85,
+  "Crickets.wav": 1
 }

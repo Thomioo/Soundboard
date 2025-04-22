@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import sys
 import os
 import threading
@@ -70,6 +68,8 @@ SOUNDS_DIR.mkdir(parents=True, exist_ok=True) # Ensure the directory exists, inc
 FAVOURITES_FILE = SOUNDS_DIR / "favourites.json"
 ORDER_FILE = SOUNDS_DIR / "order.json"
 ICON_FILE = "soundboard_icon.ico" # Assumes icon is in 'static' folder relative to script/bundle
+VOLUMES_FILE = SOUNDS_DIR / "volumes.json"
+SETTINGS_FILE = PERSISTENT_DATA_DIR / "settings.json"
 
 # --- File Logging Setup ---
 LOG_FILE = PERSISTENT_DATA_DIR / "soundboard_app.log"
@@ -198,6 +198,32 @@ def save_order(order):
     except Exception as e:
         logger.error(f"Error saving order: {e}", exc_info=True)
 
+def load_volumes():
+    if VOLUMES_FILE.exists():
+        try:
+            with open(VOLUMES_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_volumes(volumes):
+    with open(VOLUMES_FILE, "w", encoding="utf-8") as f:
+        json.dump(volumes, f, indent=2)
+
+def load_settings():
+    if SETTINGS_FILE.exists():
+        try:
+            with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_settings(settings):
+    with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=2)
+
 # --- FastAPI Endpoints ---
 @app.get("/", response_class=HTMLResponse)
 async def serve_home():
@@ -259,39 +285,59 @@ async def set_order(request: Request):
         logger.error(f"Error setting order: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Error saving order")
 
+@app.get("/volumes")
+async def get_volumes():
+    return load_volumes()
+
+@app.post("/volumes")
+async def set_volumes(request: Request):
+    try:
+        volumes = await request.json()
+        if not isinstance(volumes, dict):
+            raise HTTPException(status_code=400, detail="Invalid volumes format, must be a dict")
+        save_volumes(volumes)
+        return {"status": "ok"}
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON data")
+
+@app.get("/settings")
+async def get_settings():
+    return load_settings()
+
+@app.post("/settings")
+async def set_settings(request: Request):
+    try:
+        data = await request.json()
+        settings = load_settings()
+        if "dark_mode" in data:
+            settings["dark_mode"] = data["dark_mode"]
+            save_settings(settings)
+        return {"status": "ok"}
+    except Exception as e:
+        logger.error(f"Error saving settings: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to save settings")
+
 # --- Audio Playback ---
 def play_audio_file(path: Path, stop_event: threading.Event):
-    """Plays an audio file using sounddevice."""
     try:
-        logger.info(f"Attempting to play: {path}")
-        data, samplerate = sf.read(str(path), dtype='float32', always_2d=True) # Read as 2D float32
-
+        volumes = load_volumes()
+        base_name = path.name
+        volume = float(volumes.get(base_name, 1.0))  # Default to 1.0 (100%)
+        data, samplerate = sf.read(str(path), dtype='float32', always_2d=True)
         if data.shape[1] > 2:
-             logger.warning(f"Sound '{path.name}' has {data.shape[1]} channels, playing first 2.")
-             data = data[:, :2]
+            data = data[:, :2]
         elif data.shape[1] == 1:
-             logger.info(f"Sound '{path.name}' is mono, duplicating to stereo.")
-             data = np.column_stack((data[:, 0], data[:, 0])) # Ensure stereo
-
-        # Stream audio data
+            data = np.column_stack((data[:, 0], data[:, 0]))
+        # Apply volume
+        data = data * volume
         with sd.OutputStream(samplerate=samplerate, channels=data.shape[1], dtype='float32') as stream:
-            blocksize = 2048 # Can adjust based on performance
+            blocksize = 2048
             idx = 0
-            logger.info(f"Starting playback stream for {path.name} (SR={samplerate}, Ch={data.shape[1]})")
             while idx < len(data) and not stop_event.is_set():
                 end_idx = min(idx + blocksize, len(data))
                 chunk = data[idx:end_idx]
                 stream.write(chunk)
                 idx = end_idx
-            if stop_event.is_set():
-                logger.info(f"Playback stopped externally for {path.name}")
-            else:
-                logger.info(f"Playback finished for {path.name}")
-
-    except sd.PortAudioError as pae:
-         logger.error(f"PortAudio Error playing sound {path.name}: {pae}", exc_info=True)
-    except FileNotFoundError:
-         logger.error(f"Sound file not found during playback attempt: {path}")
     except Exception as e:
         logger.error(f"Error playing sound {path.name}: {type(e).__name__} - {e}", exc_info=True)
 
@@ -536,8 +582,12 @@ def create_tray_icon(url):
         server_stop_event.set() # Signal the main thread/server to stop
         icon.stop() # Stop the tray icon loop
 
+    def on_settings(icon, item):
+        threading.Thread(target=show_settings_window, daemon=True).start()
+
     menu = Menu(
         MenuItem(f"Open Soundboard ({url})", on_open, default=True),
+        MenuItem("Settings...", on_settings),
         Menu.SEPARATOR,
         MenuItem("Quit", on_quit)
     )
@@ -556,6 +606,89 @@ def create_tray_icon(url):
         # Ensure main thread knows to exit if tray stops unexpectedly or normally
         server_stop_event.set()
 
+# --- Settings Window ---
+def show_settings_window():
+    import tkinter as tk
+    from tkinter import ttk, messagebox
+    import sounddevice as sd
+
+    # Load current settings or defaults
+    settings = load_settings()
+    current_host = settings.get("host", get_local_ip())
+    current_port = str(settings.get("port", 8000))
+    current_device = settings.get("audio_device", None)
+
+    # Query only playback devices (those shown in Windows sound tab)
+    try:
+        devices = sd.query_devices()
+        hostapis = sd.query_hostapis()
+        # Find Windows WASAPI or MME hostapis
+        valid_hostapis = [i for i, h in enumerate(hostapis) if h['name'] in ('Windows WASAPI', 'MME', 'Windows DirectSound')]
+        device_names = [
+            f"{i}: {d['name']}"
+            for i, d in enumerate(devices)
+            if d['max_output_channels'] > 0 and d['hostapi'] in valid_hostapis
+        ]
+    except Exception as e:
+        device_names = []
+        print("Could not query audio devices:", e)
+
+    root = tk.Tk()
+    root.title("Soundboard Settings")
+    root.geometry("400x260")
+    root.resizable(False, False)
+
+    # Set window icon to the same .ico as the tray and project
+    try:
+        icon_path = resource_path(f"static/{ICON_FILE}")
+        root.iconbitmap(icon_path)
+    except Exception as e:
+        print(f"Could not set window icon: {e}")
+
+    tk.Label(root, text="Host Address:").pack(anchor="w", padx=20, pady=(18,0))
+    host_entry = tk.Entry(root)
+    host_entry.insert(0, current_host)
+    host_entry.pack(fill="x", padx=20)
+
+    tk.Label(root, text="Server Port:").pack(anchor="w", padx=20, pady=(12,0))
+    port_entry = tk.Entry(root)
+    port_entry.insert(0, current_port)
+    port_entry.pack(fill="x", padx=20)
+
+    tk.Label(root, text="Audio Output Device:").pack(anchor="w", padx=20, pady=(12,0))
+    device_var = tk.StringVar()
+    device_combo = ttk.Combobox(root, textvariable=device_var, values=device_names, state="readonly")
+    if current_device:
+        for name in device_names:
+            if name.startswith(str(current_device)):
+                device_var.set(name)
+                break
+    device_combo.pack(fill="x", padx=20)
+
+    # Dark mode checkbox
+    dark_mode_var = tk.BooleanVar(value=settings.get("dark_mode", False))
+    dark_mode_check = tk.Checkbutton(root, text="Enable Dark Mode", variable=dark_mode_var)
+    dark_mode_check.pack(anchor="w", padx=20, pady=(16, 0))
+
+    def save_and_close():
+        host = host_entry.get().strip()
+        port = port_entry.get().strip()
+        device = device_var.get().split(":")[0] if device_var.get() else None
+        try:
+            port = int(port)
+        except ValueError:
+            messagebox.showerror("Invalid Port", "Port must be an integer.")
+            return
+        settings["host"] = host
+        settings["port"] = port
+        settings["audio_device"] = int(device) if device is not None else None
+        settings["dark_mode"] = dark_mode_var.get()
+        save_settings(settings)
+        messagebox.showinfo("Settings Saved", "Settings saved. Please restart the app for host/port changes to take effect.")
+        root.destroy()
+
+    tk.Button(root, text="Save", command=save_and_close).pack(pady=18)
+    root.mainloop()
 
 # --- Server Startup Logic ---
 def get_local_ip():
@@ -609,8 +742,15 @@ if __name__ == "__main__":
     logger.info(f"Logging to file: {LOG_FILE}")
 
     # Determine host and port
-    HOST = get_local_ip()
-    PORT = 8000
+    settings = load_settings()
+    HOST = settings.get("host", get_local_ip())
+    PORT = int(settings.get("port", 8000))
+    AUDIO_DEVICE = settings.get("audio_device", None)
+    if AUDIO_DEVICE is not None:
+        try:
+            sd.default.device = int(AUDIO_DEVICE)
+        except Exception as e:
+            logger.warning(f"Could not set audio device: {e}")
     URL = f"http://{HOST}:{PORT}"
     logger.info(f"Server will attempt to run at: {URL}")
 

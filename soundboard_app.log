@@ -459,3 +459,145 @@
 2025-04-22 01:22:45 [INFO] [__main__:784] Tray icon exited. Initiating server shutdown.
 2025-04-22 01:22:45 [INFO] [__main__:798] Requesting Uvicorn server to shut down...
 2025-04-22 01:22:45 [INFO] [__main__:811] --- Soundboard finished ---
+2025-04-22 03:21:02 [INFO] [__main__:618] --- Starting Soundboard ---
+2025-04-22 03:21:02 [INFO] [__main__:619] Running from: C:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:21:02 [INFO] [__main__:620] Persistent data directory: C:\Projects\.proj\_Soundboard
+2025-04-22 03:21:02 [INFO] [__main__:621] Sounds directory: C:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:21:02 [INFO] [__main__:622] Static files source directory: C:\Projects\.proj\_Soundboard\static
+2025-04-22 03:21:02 [INFO] [__main__:623] Logging to file: C:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:21:02 [INFO] [__main__:629] Server will attempt to run at: http://192.168.90.235:8000
+2025-04-22 03:21:02 [INFO] [__main__:645] Uvicorn server thread started.
+2025-04-22 03:21:02 [INFO] [uvicorn.error:82] Started server process [41000]
+2025-04-22 03:21:02 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:21:02 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:21:02 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.90.235:8000 (Press CTRL+C to quit)
+2025-04-22 03:21:04 [INFO] [__main__:655] Access the soundboard web UI at: http://192.168.90.235:8000
+2025-04-22 03:21:04 [INFO] [__main__:562] Starting tray icon...
+2025-04-22 03:21:10 [INFO] [__main__:545] Opening URL from tray: http://192.168.90.235:8000
+2025-04-22 03:22:32 [INFO] [__main__:549] Quit requested from tray icon.
+2025-04-22 03:22:32 [INFO] [__main__:569] Tray icon run loop finished.
+2025-04-22 03:22:32 [INFO] [__main__:662] Tray icon exited. Initiating server shutdown.
+2025-04-22 03:22:32 [INFO] [__main__:676] Requesting Uvicorn server to shut down...
+2025-04-22 03:22:32 [INFO] [__main__:689] --- Soundboard finished ---
+2025-04-22 03:23:35 [INFO] [__main__:618] --- Starting Soundboard ---
+2025-04-22 03:23:35 [INFO] [__main__:619] Running from: C:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:23:35 [INFO] [__main__:620] Persistent data directory: C:\Projects\.proj\_Soundboard
+2025-04-22 03:23:35 [INFO] [__main__:621] Sounds directory: C:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:23:35 [INFO] [__main__:622] Static files source directory: C:\Projects\.proj\_Soundboard\static
+2025-04-22 03:23:35 [INFO] [__main__:623] Logging to file: C:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:23:35 [INFO] [__main__:629] Server will attempt to run at: http://192.168.90.235:8000
+2025-04-22 03:23:35 [INFO] [__main__:645] Uvicorn server thread started.
+2025-04-22 03:23:35 [INFO] [uvicorn.error:82] Started server process [28904]
+2025-04-22 03:23:35 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:23:35 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:23:35 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.90.235:8000 (Press CTRL+C to quit)
+2025-04-22 03:23:37 [INFO] [__main__:655] Access the soundboard web UI at: http://192.168.90.235:8000
+2025-04-22 03:23:37 [INFO] [__main__:562] Starting tray icon...
+2025-04-22 03:23:44 [INFO] [__main__:545] Opening URL from tray: http://192.168.90.235:8000
+2025-04-22 03:25:11 [INFO] [__main__:604] --- Starting Soundboard ---
+2025-04-22 03:25:11 [INFO] [__main__:605] Running from: c:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:25:11 [INFO] [__main__:606] Persistent data directory: c:\Projects\.proj\_Soundboard
+2025-04-22 03:25:11 [INFO] [__main__:607] Sounds directory: c:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:25:11 [INFO] [__main__:608] Static files source directory: c:\Projects\.proj\_Soundboard\static
+2025-04-22 03:25:11 [INFO] [__main__:609] Logging to file: c:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:25:11 [INFO] [__main__:615] Server will attempt to run at: http://192.168.90.235:8000
+2025-04-22 03:25:11 [INFO] [__main__:631] Uvicorn server thread started.
+2025-04-22 03:25:11 [INFO] [uvicorn.error:82] Started server process [9124]
+2025-04-22 03:25:11 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:25:11 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:25:11 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.90.235:8000 (Press CTRL+C to quit)
+2025-04-22 03:25:13 [INFO] [__main__:641] Access the soundboard web UI at: http://192.168.90.235:8000
+2025-04-22 03:25:13 [INFO] [__main__:548] Starting tray icon...
+2025-04-22 03:25:15 [INFO] [__main__:535] Quit requested from tray icon.
+2025-04-22 03:25:15 [INFO] [__main__:555] Tray icon run loop finished.
+2025-04-22 03:25:15 [INFO] [__main__:648] Tray icon exited. Initiating server shutdown.
+2025-04-22 03:25:15 [INFO] [__main__:662] Requesting Uvicorn server to shut down...
+2025-04-22 03:25:15 [INFO] [__main__:675] --- Soundboard finished ---
+2025-04-22 03:25:35 [INFO] [__main__:724] --- Starting Soundboard ---
+2025-04-22 03:25:35 [INFO] [__main__:725] Running from: c:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:25:35 [INFO] [__main__:726] Persistent data directory: c:\Projects\.proj\_Soundboard
+2025-04-22 03:25:35 [INFO] [__main__:727] Sounds directory: c:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:25:35 [INFO] [__main__:728] Static files source directory: c:\Projects\.proj\_Soundboard\static
+2025-04-22 03:25:35 [INFO] [__main__:729] Logging to file: c:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:25:35 [INFO] [__main__:742] Server will attempt to run at: http://192.168.90.235:8000
+2025-04-22 03:25:35 [INFO] [__main__:758] Uvicorn server thread started.
+2025-04-22 03:25:36 [INFO] [uvicorn.error:82] Started server process [28628]
+2025-04-22 03:25:36 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:25:36 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:25:36 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.90.235:8000 (Press CTRL+C to quit)
+2025-04-22 03:25:37 [INFO] [__main__:768] Access the soundboard web UI at: http://192.168.90.235:8000
+2025-04-22 03:25:37 [INFO] [__main__:585] Starting tray icon...
+2025-04-22 03:25:47 [INFO] [__main__:564] Opening URL from tray: http://192.168.90.235:8000
+2025-04-22 03:27:00 [INFO] [__main__:568] Quit requested from tray icon.
+2025-04-22 03:27:00 [INFO] [__main__:592] Tray icon run loop finished.
+2025-04-22 03:27:00 [INFO] [__main__:775] Tray icon exited. Initiating server shutdown.
+2025-04-22 03:27:00 [INFO] [__main__:789] Requesting Uvicorn server to shut down...
+2025-04-22 03:27:00 [INFO] [__main__:802] --- Soundboard finished ---
+2025-04-22 03:28:19 [INFO] [__main__:724] --- Starting Soundboard ---
+2025-04-22 03:28:19 [INFO] [__main__:725] Running from: c:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:28:19 [INFO] [__main__:726] Persistent data directory: c:\Projects\.proj\_Soundboard
+2025-04-22 03:28:19 [INFO] [__main__:727] Sounds directory: c:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:28:19 [INFO] [__main__:728] Static files source directory: c:\Projects\.proj\_Soundboard\static
+2025-04-22 03:28:19 [INFO] [__main__:729] Logging to file: c:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:28:19 [INFO] [__main__:742] Server will attempt to run at: http://192.168.90.235:8000
+2025-04-22 03:28:19 [INFO] [__main__:758] Uvicorn server thread started.
+2025-04-22 03:28:19 [INFO] [uvicorn.error:82] Started server process [33400]
+2025-04-22 03:28:19 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:28:19 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:28:19 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.90.235:8000 (Press CTRL+C to quit)
+2025-04-22 03:28:21 [INFO] [__main__:768] Access the soundboard web UI at: http://192.168.90.235:8000
+2025-04-22 03:28:21 [INFO] [__main__:585] Starting tray icon...
+2025-04-22 03:29:26 [INFO] [__main__:568] Quit requested from tray icon.
+2025-04-22 03:29:26 [INFO] [__main__:592] Tray icon run loop finished.
+2025-04-22 03:29:26 [INFO] [__main__:775] Tray icon exited. Initiating server shutdown.
+2025-04-22 03:29:26 [INFO] [__main__:789] Requesting Uvicorn server to shut down...
+2025-04-22 03:29:26 [INFO] [__main__:802] --- Soundboard finished ---
+2025-04-22 03:29:31 [INFO] [__main__:724] --- Starting Soundboard ---
+2025-04-22 03:29:31 [INFO] [__main__:725] Running from: c:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:29:31 [INFO] [__main__:726] Persistent data directory: c:\Projects\.proj\_Soundboard
+2025-04-22 03:29:31 [INFO] [__main__:727] Sounds directory: c:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:29:31 [INFO] [__main__:728] Static files source directory: c:\Projects\.proj\_Soundboard\static
+2025-04-22 03:29:31 [INFO] [__main__:729] Logging to file: c:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:29:31 [INFO] [__main__:742] Server will attempt to run at: http://192.168.2.101:8000
+2025-04-22 03:29:31 [INFO] [__main__:758] Uvicorn server thread started.
+2025-04-22 03:29:31 [INFO] [uvicorn.error:82] Started server process [29720]
+2025-04-22 03:29:31 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:29:31 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:29:31 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.2.101:8000 (Press CTRL+C to quit)
+2025-04-22 03:29:33 [INFO] [__main__:768] Access the soundboard web UI at: http://192.168.2.101:8000
+2025-04-22 03:29:33 [INFO] [__main__:585] Starting tray icon...
+2025-04-22 03:29:45 [INFO] [__main__:564] Opening URL from tray: http://192.168.2.101:8000
+2025-04-22 03:34:37 [INFO] [__main__:568] Quit requested from tray icon.
+2025-04-22 03:34:37 [INFO] [__main__:592] Tray icon run loop finished.
+2025-04-22 03:34:37 [INFO] [__main__:775] Tray icon exited. Initiating server shutdown.
+2025-04-22 03:34:37 [INFO] [__main__:789] Requesting Uvicorn server to shut down...
+2025-04-22 03:34:37 [INFO] [__main__:802] --- Soundboard finished ---
+2025-04-22 03:34:41 [INFO] [__main__:737] --- Starting Soundboard ---
+2025-04-22 03:34:41 [INFO] [__main__:738] Running from: c:\Projects\.proj\_Soundboard\main.py
+2025-04-22 03:34:41 [INFO] [__main__:739] Persistent data directory: c:\Projects\.proj\_Soundboard
+2025-04-22 03:34:41 [INFO] [__main__:740] Sounds directory: c:\Projects\.proj\_Soundboard\sounds
+2025-04-22 03:34:41 [INFO] [__main__:741] Static files source directory: c:\Projects\.proj\_Soundboard\static
+2025-04-22 03:34:41 [INFO] [__main__:742] Logging to file: c:\Projects\.proj\_Soundboard\soundboard_app.log
+2025-04-22 03:34:41 [INFO] [__main__:755] Server will attempt to run at: http://192.168.2.101:8000
+2025-04-22 03:34:41 [INFO] [__main__:771] Uvicorn server thread started.
+2025-04-22 03:34:41 [INFO] [uvicorn.error:82] Started server process [22320]
+2025-04-22 03:34:41 [INFO] [uvicorn.error:48] Waiting for application startup.
+2025-04-22 03:34:41 [INFO] [uvicorn.error:62] Application startup complete.
+2025-04-22 03:34:41 [INFO] [uvicorn.error:214] Uvicorn running on http://192.168.2.101:8000 (Press CTRL+C to quit)
+2025-04-22 03:34:43 [INFO] [__main__:781] Access the soundboard web UI at: http://192.168.2.101:8000
+2025-04-22 03:34:43 [INFO] [__main__:598] Starting tray icon...
+2025-04-22 03:34:51 [INFO] [__main__:577] Opening URL from tray: http://192.168.2.101:8000
+2025-04-22 03:36:24 [INFO] [__main__:279] Sound order updated.
+2025-04-22 03:36:32 [INFO] [__main__:371] Started playback thread for Victory.wav
+2025-04-22 03:36:32 [INFO] [__main__:259] Favourites updated.
+2025-04-22 03:36:34 [INFO] [__main__:472] Received request to stop all sounds.
+2025-04-22 03:36:34 [INFO] [__main__:489] Signaled 1 active player(s) to stop.
+2025-04-22 03:36:39 [INFO] [__main__:259] Favourites updated.
+2025-04-22 03:38:43 [INFO] [__main__:279] Sound order updated.
+2025-04-22 03:38:43 [INFO] [__main__:371] Started playback thread for VineBoom.wav
+2025-04-22 03:38:44 [INFO] [__main__:279] Sound order updated.
+2025-04-22 03:38:53 [INFO] [__main__:371] Started playback thread for Crickets.wav
+2025-04-22 03:38:55 [INFO] [__main__:371] Started playback thread for Crickets.wav
+2025-04-22 03:38:59 [INFO] [__main__:371] Started playback thread for Crickets.wav
+2025-04-22 03:39:01 [INFO] [__main__:472] Received request to stop all sounds.
+2025-04-22 03:39:01 [INFO] [__main__:489] Signaled 3 active player(s) to stop.

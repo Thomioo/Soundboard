@@ -215,7 +215,7 @@
 
     #fullscreen-btn {
       display: block !important;
-      position: static;
+      position: static !important;
       background-color: #66ccff;
       border: none;
       padding: 10px 16px;
@@ -226,10 +226,24 @@
       transition: background 0.2s;
       cursor: pointer;
       /* visually match other buttons */
+      margin: 0;
     }
 
     #fullscreen-btn:hover {
       background: #0288d1;
+    }
+
+    @media (max-width: 768px) {
+      #fullscreen-btn {
+        /* Remove all mobile-specific positioning and sizing */
+        display: block !important;
+        position: static !important;
+        font-size: 1.7rem;
+        padding: 1.5rem;
+        right: auto;
+        bottom: auto;
+        z-index: auto;
+      }
     }
 
     #stopall-btn {
@@ -267,23 +281,13 @@
         width: 80px !important;
         height: 80px !important;
       }
-
-      #fullscreen-btn {
-        display: block !important;
-        position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        z-index: 10000;
-        font-size: 1.7rem;
-        padding: 1.5rem;
-      }
     }
 
     .fav-btn {
       position: absolute;
       top: 8px;
       left: 8px;
-      background: none;
+      background: none !important;
       border: none;
       border-radius: 50%;
       font-size: 1.3rem;
@@ -295,7 +299,7 @@
       opacity: 0.6;
       cursor: pointer;
       z-index: 2;
-      transition: opacity 0.2s, color 0.2s;
+      transition: opacity 0.2s, color 0.2s, transform 0.18s;
       color: #888;
       box-shadow: none;
       padding: 0;
@@ -307,9 +311,12 @@
     }
 
     .fav-btn:hover,
+    .fav-btn:focus,
     .fav-btn.fav:hover {
+      background: none !important;
       opacity: 1;
       color: #e53935;
+      transform: scale(1.18);
     }
 
     .custom-file-label {
@@ -335,16 +342,289 @@
     .sortable-ghost {
       opacity: 0 !important;
     }
+
+    .volume-indicator {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 0.95em;
+      color: #b0b8c1;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 6px;
+      padding: 2px 8px;
+      pointer-events: none;
+      z-index: 3;
+      user-select: none;
+      opacity: 0;
+      transition: opacity 0.15s, transform 0.15s;
+      transform: scale(1);
+    }
+
+    .sound-button:hover .volume-indicator {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .sound-button.show-volume-overlay .volume-indicator {
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.1s, transform 0.1s;
+    }
+
+    .volume-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(220, 220, 220, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      pointer-events: none;
+      border-radius: 14px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .sound-button.show-volume-overlay .volume-overlay {
+      opacity: 1;
+    }
+
+    .volume-overlay-number {
+      font-size: 2.8rem;
+      color: #0077cc;
+      font-weight: bold;
+      text-shadow: 0 2px 12px #fff, 0 1px 0 #b0b8c1;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    body.dark-mode {
+      background: #181c24;
+      color: #e0e6ef;
+    }
+
+    body.dark-mode h1 {
+      color: #4fc3f7;
+    }
+
+    body.dark-mode .sound-button {
+      background: #232a36;
+    }
+
+    body.dark-mode .sound-button:hover {
+      background: #2d3646;
+    }
+
+    body.dark-mode .sound-label {
+      color: #b0c7e6;
+    }
+
+    body.dark-mode .delete-btn,
+    body.dark-mode .fav-btn {
+      color: #bbb;
+    }
+
+    body.dark-mode .delete-btn:hover,
+    body.dark-mode .fav-btn:hover,
+    body.dark-mode .fav-btn.fav:hover {
+      color: #ff6b6b;
+    }
+
+    body.dark-mode .volume-indicator {
+      background: rgba(40, 50, 70, 0.85);
+      color: #b0c7e6;
+    }
+
+    body.dark-mode .volume-overlay {
+      background: rgba(40, 50, 70, 0.92);
+    }
+
+    body.dark-mode .volume-overlay-number {
+      color: #4fc3f7;
+      text-shadow: 0 2px 12px #181c24, 0 1px 0 #232a36;
+    }
+
+    body.dark-mode #dropzone {
+      background: #232a36;
+      border-color: #4fc3f7;
+    }
+
+    body.dark-mode #dropzone.dragover {
+      background: #2d3646;
+    }
+
+    body.dark-mode .custom-file-label {
+      background: #232a36;
+      color: #4fc3f7;
+    }
+
+    body.dark-mode .custom-file-label:hover {
+      background: #2d3646;
+    }
+
+    body.dark-mode #uploadModalContent {
+      background: linear-gradient(to right, #232a36, #2d3646);
+      color: #e0e6ef;
+    }
+
+    body.dark-mode #uploadModalContent button {
+      background: #4fc3f7;
+      color: #181c24;
+    }
+
+    body.dark-mode #uploadModalContent button:hover {
+      background: #0288d1;
+      color: #fff;
+    }
+
+    body.dark-mode #fullscreen-btn {
+      background: #232a36;
+      color: #4fc3f7;
+    }
+
+    body.dark-mode #fullscreen-btn:hover {
+      background: #2d3646;
+    }
+
+    body.dark-mode #stopall-btn {
+      background: #ff6b6b;
+      color: #fff;
+    }
+
+    body.dark-mode #stopall-btn:hover {
+      background: #b71c1c;
+    }
+
+    /* Switch styling */
+    .switch-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 1.08em;
+      font-weight: 500;
+      color: #0077cc;
+      letter-spacing: 0.5px;
+      margin: 0;
+      user-select: none;
+    }
+
+    .switch-label input[type="checkbox"] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: #cfe7fa;
+      border-radius: 24px;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: #0077cc;
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+      box-shadow: 0 1px 4px #0077cc22;
+    }
+
+    input[type="checkbox"]:checked+.slider {
+      background: #4fc3f7;
+    }
+
+    input[type="checkbox"]:checked+.slider:before {
+      transform: translateX(20px);
+      background: #4fc3f7;
+    }
+
+    .switch-text {
+      margin-left: 4px;
+      font-size: 1em;
+      color: inherit;
+    }
+
+    body.dark-mode #darkmode-toggle-container .switch-label {
+      color: #4fc3f7;
+    }
+
+    body.dark-mode .slider {
+      background: #232a36;
+    }
+
+    body.dark-mode input[type="checkbox"]:checked+.slider {
+      background: #4fc3f7;
+    }
+
+    body.dark-mode .slider:before {
+      background: #4fc3f7;
+    }
+
+    body.dark-mode input[type="checkbox"]:checked+.slider:before {
+      background: #232a36;
+    }
+
+    #controls button,
+    #controls .refresh-btn {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4fc3f7;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #controls button:hover,
+    #controls .refresh-btn:hover {
+      background: #0288d1;
+    }
+
+    body.dark-mode #controls button,
+    body.dark-mode #controls .refresh-btn {
+      background: #232a36;
+      color: #4fc3f7;
+      box-shadow: 0 0 10px #000a;
+    }
+
+    body.dark-mode #controls button:hover,
+    body.dark-mode #controls .refresh-btn:hover {
+      background: #2d3646;
+      color: #4fc3f7;
+    }
   </style>
 </head>
 
 <body>
+  <div id="darkmode-toggle-container">
+    <label class="switch-label">
+      <input type="checkbox" id="darkmode-toggle" />
+      <span class="slider"></span>
+      <span class="switch-text">Dark Mode</span>
+    </label>
+  </div>
   <h1>Soundboard</h1>
   <div id="controls">
     <input type="file" id="fileInput" accept="audio/*" hidden />
     <button onclick="triggerFile()">Upload</button>
     <button class="refresh-btn" onclick="fetchSounds()">Refresh</button>
-    <button id="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+    <button id="fullscreen-btn">Fullscreen</button>
   </div>
 
   <!-- Add the floating stop button outside controls -->
@@ -388,6 +668,7 @@
     let selectedFile = null;
     let favourites = [];
     let soundOrder = [];
+    let volumes = {};
 
     async function fetchOrder() {
       const res = await fetch("/order");
@@ -415,9 +696,23 @@
       });
     }
 
+    async function fetchVolumes() {
+      const res = await fetch("/volumes");
+      volumes = await res.json();
+    }
+
+    async function saveVolumes() {
+      await fetch("/volumes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(volumes)
+      });
+    }
+
     async function fetchSounds() {
       await fetchFavourites();
       await fetchOrder();
+      await fetchVolumes();
       const res = await fetch("/sounds");
       let sounds = await res.json();
 
@@ -448,8 +743,12 @@
           favBtn.title = "Favourite";
           favBtn.className = "fav-btn" + (favourites.includes(name) ? " fav" : "");
           favBtn.innerHTML = favourites.includes(name)
-            ? `<svg width="20" height="20" viewBox="0 0 20 20" fill="#e53935" stroke="#e53935"><path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/></svg>`
-            : `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/></svg>`;
+            ? `<svg width="20" height="20" viewBox="0 0 20 20" fill="#e53935" stroke="#e53935">
+                <path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/>
+              </svg>`
+            : `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#e53935" stroke-width="2">
+                <path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/>
+              </svg>`;
           favBtn.onclick = (e) => {
             e.stopPropagation();
             toggleFavourite(name);
@@ -490,6 +789,46 @@
             }
           });
 
+          // Volume indicator
+          const volumeValue = volumes[name] !== undefined ? volumes[name] : 1.0;
+          const volIndicator = document.createElement("span");
+          volIndicator.className = "volume-indicator";
+          volIndicator.textContent = Math.round(volumeValue * 100) + "%";
+          btn.appendChild(volIndicator);
+
+          // Volume overlay for scroll
+          const overlay = document.createElement("div");
+          overlay.className = "volume-overlay";
+          const overlayNum = document.createElement("span");
+          overlayNum.className = "volume-overlay-number";
+          overlayNum.textContent = Math.round(volumeValue * 100);
+          overlay.appendChild(overlayNum);
+          btn.appendChild(overlay);
+
+          // Mouse wheel volume control with overlay
+          let overlayTimeout = null;
+          btn.addEventListener("wheel", async function (e) {
+            e.preventDefault();
+            let vol = volumes[name] !== undefined ? volumes[name] : 1.0;
+            vol += (e.deltaY < 0 ? 0.05 : -0.05);
+            vol = Math.max(0, Math.min(2, vol));
+            volumes[name] = parseFloat(vol.toFixed(2));
+            volIndicator.textContent = Math.round(vol * 100) + "%";
+            overlayNum.textContent = Math.round(vol * 100);
+            btn.classList.add("show-volume-overlay");
+            await saveVolumes();
+            // Hide overlay after 700ms
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+            overlayTimeout = setTimeout(() => {
+              btn.classList.remove("show-volume-overlay");
+            }, 700);
+          }, { passive: false });
+
+          // Optional: hide overlay if mouse leaves button
+          btn.addEventListener("mouseleave", () => {
+            btn.classList.remove("show-volume-overlay");
+          });
+
           btn.onclick = () => playSound(name);
 
           container.appendChild(btn);
@@ -501,7 +840,7 @@
       window.soundSortable = Sortable.create(container, {
         animation: 150,
         filter: ".fav-btn,.delete-btn",
-        ghostClass: "sortable-ghost", // Add this line
+        ghostClass: "sortable-ghost",
         onEnd: async function (evt) {
           // Only update order for non-favourites
           const newOrder = Array.from(container.children)
@@ -521,7 +860,19 @@
         favourites.splice(idx, 1);
       }
       await saveFavourites();
-      fetchSounds();
+
+      // Update only the button for this sound
+      const btn = document.querySelector(`.sound-button[data-sound="${name}"] .fav-btn`);
+      if (btn) {
+        btn.classList.toggle("fav", idx === -1);
+        btn.innerHTML = (idx === -1)
+          ? `<svg width="20" height="20" viewBox="0 0 20 20" fill="#e53935" stroke="#e53935">
+                <path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/>
+             </svg>`
+          : `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#e53935" stroke-width="2">
+                <path d="M10 17l-6.16-5.26A4.5 4.5 0 0110 3.5a4.5 4.5 0 016.16 8.24z"/>
+             </svg>`;
+      }
     }
 
     async function deleteSound(name) {
@@ -584,7 +935,7 @@
       document.getElementById("imageInput").click();
     };
 
-    function toggleFullscreen() {
+    document.getElementById("fullscreen-btn").addEventListener("click", function () {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
           alert(`Error: ${err.message}`);
@@ -592,7 +943,7 @@
       } else {
         document.exitFullscreen();
       }
-    }
+    });
 
     async function submitUpload() {
       const name = document.getElementById("soundName").value.trim();
@@ -635,6 +986,45 @@
     };
 
     fetchSounds();
+  </script>
+  <script>
+    // --- Dark mode logic ---
+    async function getDarkModeSetting() {
+      try {
+        const res = await fetch("/settings");
+        const settings = await res.json();
+        return settings.dark_mode === true;
+      } catch {
+        return false;
+      }
+    }
+
+    async function setDarkModeSetting(val) {
+      try {
+        await fetch("/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ dark_mode: val })
+        });
+      } catch { }
+    }
+
+    async function applyDarkModeUI() {
+      const dark = await getDarkModeSetting();
+      document.body.classList.toggle("dark-mode", dark);
+      document.getElementById("darkmode-toggle").checked = dark;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggle = document.getElementById("darkmode-toggle");
+      if (toggle) {
+        toggle.addEventListener("change", async function () {
+          await setDarkModeSetting(this.checked);
+          document.body.classList.toggle("dark-mode", this.checked);
+        });
+      }
+      applyDarkModeUI();
+    });
   </script>
 </body>
 
