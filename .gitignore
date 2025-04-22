@@ -1,7 +1,8 @@
-.build
-.vscode
-build
-dist
-soundboard_app.log
-settings.json
-main.spec
+/.build
+/.vscode
+/build
+/dist
+/soundboard_app.log
+/settings.json
+/main.spec
+/compile.bat
